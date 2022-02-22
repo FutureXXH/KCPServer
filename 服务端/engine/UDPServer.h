@@ -50,6 +50,7 @@ private:
 	int recvData();
 	int recvData_kcp(char* buf, s32 recvBytes, s32 ip, u16 port);
 	void onAccept(char* buff, DATA_HEAD head, sockaddr_in clientAddr);
+	void onDisconnect(int cID);
 	bool checkIsConnect(u32 ip, u16 port);
 	void checkConnect(UDP_BASE* c);
 	bool addCheckIsConnect(u32 ip, u16 port);

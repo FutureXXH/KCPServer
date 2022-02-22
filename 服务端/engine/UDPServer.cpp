@@ -247,7 +247,8 @@ int UDPServer::recvData()
 	{
 	case 65000://断开连接
 	{
-
+		onDisconnect(head.ID);
+		return 0;
 	}
 	case 65001://请求连接
 	{
@@ -274,6 +275,13 @@ int UDPServer::recvData()
 	}
 	else if (client != NULL)
 	{
+		//发现心跳包
+		if (head.cmd == 65002)
+		{
+			SERVERPRINT_INFO << "收到心跳包" << endl;
+			client->time_Heart = time(NULL);
+			return recvByte;
+		}
 		//cout << "Recv UDP Data" << recvByte << "   " << ipstr.c_str() << ":" << port << endl;
 		onRecv_SaveData(buf, client, recvByte);
 		return recvByte;
@@ -338,6 +346,28 @@ void UDPServer::onAccept(char* buff, DATA_HEAD head, sockaddr_in clientAddr)
 	if (onAcceptEvent != nullptr)this->onAcceptEvent(this, client, 0, "");
 
 
+}
+
+void UDPServer::onDisconnect(int cID)
+{
+	UDP_BASE* client = findClient(cID,UConnect);
+	if (client == nullptr)return;
+	SERVERPRINT_INFO << "正在断开连接 " << cID << endl;;
+	DeleteCheckIsConnect(client->ip, client->port);
+	releaseKcp(client);
+
+	for (int i = 0; i < 3; i++)
+	{
+		DATA_HEAD temp;
+		temp.ID = client->ID;
+		temp.cmd = 65000;
+		temp.setSecure(__UDPServerInfo->RCode);
+		sendData(client->ID, &temp, sizeof(DATA_HEAD));
+	}
+
+	client->reset();
+	client->state = UFree;
+	//if (onDisconnectEvent != nullptr)this->onDisconnectEvent(this, client, 0, "");
 }
 
 bool UDPServer::checkIsConnect(u32 ip, u16 port)

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding = "GB2312"?>
+<root>
+ <server 
+    Port = "8888"
+	ID = "1000"
+	MaxUser = "500"
+	MaxConnect = "500"
+	RCode = "130"
+	Version = "10000"
+	RecvMax = "100"
+	RecvOne = "512"
+	HeartTimeMax = "20"
+	HeartTime = "5"
+	AutoTime = "5"
+	SafeCode = "flower"
+	Head = "UDP"/>
+</root>

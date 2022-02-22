@@ -48,6 +48,7 @@ public:
 	bool StartThread();
 	static void ThreadRun(KCPClient* kcp);
 	int onAccept(char* buff, s32 RecvID, u16 cmd, sockaddr_in clientAddr);
+	bool SendHeartPack();
 
 	int KcpSend(u16 cmd, char* buff, int size);
 	void parseCommand();

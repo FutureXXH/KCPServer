@@ -10,7 +10,14 @@ void UDPServer::parseCommand()
 		if (c->ID < 0)continue;
 		if (c->state == UFree)continue;
 
-		//判断心跳时间 暂时没写
+		//判断心跳时间 
+		if (time(NULL) - c->time_Heart > __UDPServerInfo->HeartTimeMax)
+		{
+			SERVERPRINT_INFO << c->ID << "心跳包超时" << endl;
+			onDisconnect(c->ID);
+			continue;
+		}
+		//
 
 
 		updateKcp(c);

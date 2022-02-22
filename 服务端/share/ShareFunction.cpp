@@ -69,7 +69,7 @@ namespace share
 		memcpy(FileExePath, strPath.c_str(), MAX_EXE_LEN);
 
 		__UDPServerInfo = new ConfigXML();
-		int errs = LoadServerXML("UDPServerConfig.xml");
+		int errs = LoadServerXML("KCPServerConfig.xml");
 		if (errs < 0)return false;
 
 		return true;

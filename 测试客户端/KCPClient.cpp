@@ -257,6 +257,16 @@ int KCPClient::onAccept(char* buff, s32 RecvID, u16 cmd, sockaddr_in clientAddr)
 	return 0;
 }
 
+bool KCPClient::SendHeartPack()
+{
+	if (state == Connect)
+	{
+		SendServer(65002, nullptr, 0, false);
+		return true;
+	}
+	return false;
+}
+
 int KCPClient::KcpSend(u16 cmd, char* buff, int size)
 {
 	char sendbuff[512] = { 0 };

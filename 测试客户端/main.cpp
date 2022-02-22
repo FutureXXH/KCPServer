@@ -18,6 +18,7 @@ int main()
 	}
 
 	u64 sendtestTime = time(NULL);
+	u64 sendHeartTime = time(NULL);
 	int i = 0;
 	char sendTestBuff[4];
 	while (true)
@@ -31,6 +32,11 @@ int main()
 			memcpy(sendTestBuff, (char*)&sendtest, 4);
 			kcp->KcpSend(666, sendTestBuff, 4);
 			sendtestTime = time(NULL);
+		}
+		if (time(NULL) - sendHeartTime > 2)
+		{
+			kcp->SendHeartPack();
+			sendHeartTime = time(NULL);
 		}
 		i++;
 	}
